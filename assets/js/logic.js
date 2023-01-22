@@ -3,8 +3,9 @@
 var timer = document.querySelector("#time");
 var startButton = document.querySelector("#start");
 var hide = document.querySelector(".hide");
-var playerInitials = document.querySelector("#initials");
+var initials = document.querySelector("#initials");
 var feedback = document.querySelector("#feedback");
+var submitButton = document.querySelector("#submit");
 
 //questions div
 var questionsDiv = document.querySelector("#questions");
@@ -13,12 +14,12 @@ var currentQuestionIndex = 0;
 
 //highscores.html
 var clearButton = document.querySelector("#clear");
-var highscores = document.querySelector("#highscores");
+var highscores = document.querySelector("highscores");
 
 //misc vars
 var initialTime;
 var time = allQuestions.length * 20;
-var current = 0;
+/*var current = 0;*/
 
 
 //Stage 2: functions
@@ -82,8 +83,8 @@ function questionAnswered(){
     if (this.value !== allQuestions[currentQuestionIndex].answer){
         timerCount -= 15;
         
-        if (timerCount < 0) {
-            timer = 0;
+        if (timerCount <= 0) {
+            timer.textContent = "0";
         }
 
         timer.textContent = timerCount;
@@ -119,11 +120,29 @@ function endGame() {
 };
 
 function saveHighScore(){
+    let playerInitials = initials.value.trim();
 
+    if(playerInitials !== "") {
+        let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+        let newScore = {
+            score: time,
+            initials: initials
+        };
+    
+
+        highscores.push(newScore);
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+
+        window.location.href = "highscores.html";
+    };
 };
+
+function checkForEnter(event) {
+    if(event.key === "Enter") {
+        saveHighScore();
+    }
+}
 
 
 startButton.addEventListener("click", startGame);
 submitButton.addEventListener("click", saveHighScore);
-/*
-startGame();*/
