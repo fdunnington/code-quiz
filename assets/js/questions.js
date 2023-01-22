@@ -1,43 +1,43 @@
 let allQuestions = [
-    {   Title: 'Inside which HTML element do we put JavaScript?',
-        Choices: [
+    {   title: 'Inside which HTML element do we put JavaScript?',
+        choice: [
         '<js>',
         '<script>',
         '<javascript>',
         '<scripting>'
         ],
-        Answer: "<script>",
+        answer: "<script>",
     },
-    {   Title: 'Where is the correct place to insert JavaScript?',
-        Choices: [
+    {   title: 'Where is the correct place to insert JavaScript?',
+        choice: [
             'The <head> section', 
             'The <body> section',
             'Either the <head> or the <body> section'
             ],
-        Answer: 'Either the <head> or the <body> section'
+        answer: 'Either the <head> or the <body> section'
     },
-    {   Title: 'What is the correct syntax for referring to an external script called “myScript.js”?',
-        Choices: [
+    {   title: 'What is the correct syntax for referring to an external script called “myScript.js”?',
+        choice: [
             '<script src=“myScript.js” >',
             '<script href =“myScript.js”>',
             '<script name=“myScript.js”>'
             ],
-        Answer: '<script src=“myScript.js” >'
+        answer: '<script src=“myScript.js” >'
     },
-    {   Title: 'How do you write “Hello World” in an alert box?',
-        Choices: [
+    {   title: 'How do you write “Hello World” in an alert box?',
+        choice: [
             'alertBox(“Hello World”);',
             'msg(“Hello World”);',
             'alert(“Hello World”);'
             ],
-        Answer: 'alert(“Hello World”);'
+        answer: 'alert(“Hello World”);'
     },
-    {   Title: 'How do you create a function in JavaScript?',
-        Choices: [
+    {   title: 'How do you create a function in JavaScript?',
+        choice: [
             'function:myFuntion();',
             'myFunction();',
             'function = myFunction();'
             ],    
-        Answer: 'function = myFunction();'  
+        answer: 'function = myFunction();'  
     } 
 ];

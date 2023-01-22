@@ -1,15 +1,13 @@
-// Stage 1: referencing all interactive elements
+// Stage 1: referencing all interactive HTML elements
 //main structure from index.html
 var timer = document.querySelector("#time");
 var startButton = document.querySelector("#start");
-var endScreen = document.querySelector("#end-screen");
 var hide = document.querySelector(".hide");
-var finalScore = document.querySelector("#final-score");
 var playerInitials = document.querySelector("#initials");
+var feedback = document.querySelector("#feedback");
 
-//questions
+//questions div
 var questionsDiv = document.querySelector("#questions");
-var questionTitle = document.querySelector("#question-title");
 var choicesDiv = document.querySelector("#choices");
 var currentQuestionIndex = 0;
 
@@ -25,14 +23,21 @@ var current = 0;
 
 //Stage 2: functions
 
-
 function startGame() { //when click on start button countdown begins and question appears
 //CONDITIONS: so long as quiz not already in progress (timer not 0 and questions hidden)
     timerCount = 60;
     startButton.disabled = true;
+
+    let startScreen = document.getElementById("start-screen");
+    startScreen.setAttribute("class", "hide");
+
+    questionsDiv.removeAttribute("class");
     
     startTimer();
-    showQuestion();
+    
+    getQuestion();
+    
+
     //countdown begins
     //question appears
 
@@ -43,9 +48,9 @@ function startTimer() { //sets the timer
         timerCount--;
         timer.textContent = timerCount;
 
-        if (timerCount === 0){
+        if (timerCount <= 0){
             clearInterval(time);
-            //endGame function
+            endGame();
         };
 
     }, 1000);
@@ -53,10 +58,63 @@ function startTimer() { //sets the timer
 };
 
 function getQuestion(){
+    let currentQuestion = allQuestions[currentQuestionIndex];
+    let questionTitle = document.querySelector("#question-title");
 
+    questionTitle.textContent = currentQuestion.title;
+    choicesDiv.innerHTML = "";
+
+    currentQuestion.choice.forEach(function(choice, i) {
+        let choiceButton = document.createElement("button");
+
+        choiceButton.setAttribute("class", "choice");
+        choiceButton.setAttribute("value", choice);
+
+        choiceButton.textContent = ((i+1) + ". " + choice);
+
+        choiceButton.addEventListener("click", questionAnswered);
+
+        choicesDiv.appendChild(choiceButton);
+    });
 };
 
 function questionAnswered(){
+    if (this.value !== allQuestions[currentQuestionIndex].answer){
+        timerCount -= 15;
+        
+        if (timerCount < 0) {
+            timer = 0;
+        }
+
+        timer.textContent = timerCount;
+        feedback.textContent = "Try again!";
+    } else {
+        feedback.textContent = "That's the correct answer!";
+        currentQuestionIndex++;
+    };
+
+    feedback.setAttribute("class", "feedback");
+
+    setTimeout(function(){
+        feedback.setAttribute("class", "feedback hide");
+    }, 1000);
+
+
+    if (currentQuestionIndex === allQuestions.length) {
+        endGame();
+    } else {
+        getQuestion();
+    }
+};
+
+function endGame() {
+    let endScreen = document.querySelector("#end-screen");
+    endScreen.removeAttribute("class");
+
+    let finalScore = document.querySelector("#final-score");
+    finalScore.textContent = timerCount;
+
+    questionsDiv.setAttribute("class", "hide");
 
 };
 
@@ -64,9 +122,8 @@ function saveHighScore(){
 
 };
 
+
 startButton.addEventListener("click", startGame);
-
-
-
-
-startGame();
+submitButton.addEventListener("click", saveHighScore);
+/*
+startGame();*/
