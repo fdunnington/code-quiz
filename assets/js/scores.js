@@ -1,9 +1,9 @@
 function displayHighScores(){
-    let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+    let highscores = JSON.parse(localStorage.getItem("highscores")) || [""];
 
-   /* highscores.sort(function(a, b) {
+   highscores.sort(function(a, b) { //sorts scores (time taken) from highest (least time) to lowest (most time)
         return b.score - a.score;
-    });*/
+    });
 
     highscores.forEach(function(score){
         let li = document.createElement("li");
@@ -18,7 +18,6 @@ function displayHighScores(){
 function clearHighScores() {
     localStorage.removeItem("highscores");
     window.location.reload();
-
 }
 
 

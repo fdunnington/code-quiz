@@ -3,7 +3,7 @@
 var timer = document.querySelector("#time");
 var startButton = document.querySelector("#start");
 var hide = document.querySelector(".hide");
-var initials = document.querySelector("#initials");
+var playerInitials = document.querySelector("#initials");
 var feedback = document.querySelector("#feedback");
 var submitButton = document.querySelector("#submit");
 
@@ -83,11 +83,11 @@ function questionAnswered(){
     if (this.value !== allQuestions[currentQuestionIndex].answer){
         timerCount -= 15;
         
-        if (timerCount <= 0) {
+        /*if (timerCount <= 0) {
             timer.textContent = "0";
         }
 
-        timer.textContent = timerCount;
+        timer.textContent = timerCount;*/
         feedback.textContent = "Try again!";
     } else {
         feedback.textContent = "That's the correct answer!";
@@ -120,10 +120,10 @@ function endGame() {
 };
 
 function saveHighScore(){
-    let playerInitials = initials.value.trim();
+    let initials = playerInitials.value.trim();
 
-    if(playerInitials !== "") {
-        let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+    if(initials !== "") {
+        let highscores = JSON.parse(localStorage.getItem("highscores")) || [""];
         let newScore = {
             score: time,
             initials: initials
