@@ -11,15 +11,17 @@ var playerInitials = document.querySelector("#initials");
 var questionsDiv = document.querySelector("#questions");
 var questionTitle = document.querySelector("#question-title");
 var choicesDiv = document.querySelector("#choices");
+var currentQuestionIndex = 0;
 
 //highscores.html
 var clearButton = document.querySelector("#clear");
 var highscores = document.querySelector("#highscores");
 
-
 //misc vars
 var initialTime;
-var time;
+var time = allQuestions.length * 20;
+var current = 0;
+
 
 //Stage 2: functions
 
@@ -30,11 +32,11 @@ function startGame() { //when click on start button countdown begins and questio
     startButton.disabled = true;
     
     startTimer();
+    showQuestion();
     //countdown begins
     //question appears
 
 };
-
 
 function startTimer() { //sets the timer
     time = setInterval(function() {
@@ -49,6 +51,21 @@ function startTimer() { //sets the timer
     }, 1000);
   
 };
+
+function getQuestion(){
+
+};
+
+function questionAnswered(){
+
+};
+
+function saveHighScore(){
+
+};
+
+startButton.addEventListener("click", startGame);
+
 
 
 
