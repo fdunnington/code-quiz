@@ -1,5 +1,5 @@
 function displayHighScores(){
-    let highscores = JSON.parse(localStorage.getItem("highscores")) || [""];
+    let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
 
    highscores.sort(function(a, b) { //sorts scores (time taken) from highest (least time) to lowest (most time)
         return b.score - a.score;
@@ -12,6 +12,8 @@ function displayHighScores(){
         let ol = document.getElementById("highscores");
         ol.appendChild(li);
     });
+
+    console.log(highscores);
 }
 
 
