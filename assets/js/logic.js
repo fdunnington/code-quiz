@@ -79,6 +79,7 @@ function questionAnswered(){ // checks whether answer correct. If yes, new quest
             timer.textContent = timeLeft;
         }
 
+        
     } else {
         feedback.textContent = "Correct!";
         currentQuestionIndex++;
