@@ -18,11 +18,11 @@ let allQuestions = [
     },
     {   title: 'What is the correct syntax for referring to an external script called “myScript.js”?',
         choice: [
-            '<script src=“myScript.js” >',
+            '<script src = “myScript.js” >',
             '<script href =“myScript.js”>',
-            '<script name=“myScript.js”>'
+            '<script name = “myScript.js”>'
             ],
-        answer: '<script src=“myScript.js” >'
+        answer: '<script src = “myScript.js” >'
     },
     {   title: 'How do you write “Hello World” in an alert box?',
         choice: [

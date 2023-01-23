@@ -17,48 +17,36 @@ var clearButton = document.querySelector("#clear");
 var highscores = document.querySelector("highscores");
 
 //misc vars
-var initialTime;
-var time = allQuestions.length * 20;
-/*var current = 0;*/
+var time = 0;
+var timeLeft = allQuestions.length * 15;
+
 
 
 //Stage 2: functions
-
-function startGame() { //when click on start button countdown begins and question appears
-//CONDITIONS: so long as quiz not already in progress (timer not 0 and questions hidden)
-    timerCount = 60;
-    startButton.disabled = true;
+function startGame() { //when click on start button countdown begins and question appears, replacing start screen
 
     let startScreen = document.getElementById("start-screen");
-    startScreen.setAttribute("class", "hide");
-
-    questionsDiv.removeAttribute("class");
     
-    startTimer();
+    startScreen.setAttribute("class", "hide"); //adds class 'hide' to #start-screen element so start screen hidden
+    questionsDiv.removeAttribute("class"); //removes class (which is 'hide') so questions visible
     
-    getQuestion();
-    
-
-    //countdown begins
-    //question appears
-
+    startTimer(); //calls timer function
+    getQuestion(); //calls question function
 };
 
 function startTimer() { //sets the timer
     time = setInterval(function() {
-        timerCount--;
-        timer.textContent = timerCount;
-
-        if (timerCount <= 0){
-            clearInterval(time);
+        timeLeft--; //countdown by one at interval set
+        timer.textContent = timeLeft; //#time HTML element shows timeLeft value
+        
+        if (timeLeft <= 0){ //if time <= 0 then game ends - out of time
             endGame();
+            alert("You ran out of time!");
         };
-
     }, 1000);
-  
 };
 
-function getQuestion(){
+function getQuestion(){ // pulls a question & goes through questions array until all questions asked || time runs out
     let currentQuestion = allQuestions[currentQuestionIndex];
     let questionTitle = document.querySelector("#question-title");
 
@@ -79,18 +67,21 @@ function getQuestion(){
     });
 };
 
-function questionAnswered(){
+function questionAnswered(){ // checks whether answer correct. If yes, new question, if no then time penalty and 'try again' message
     if (this.value !== allQuestions[currentQuestionIndex].answer){
-        timerCount -= 15;
-        
-        /*if (timerCount <= 0) {
+        feedback.textContent = "Try again!";
+
+        if (timeLeft <= 0) {
             timer.textContent = "0";
+            endGame();
+        } else {
+            timeLeft -= 15;
+            timer.textContent = timeLeft;
         }
 
-        timer.textContent = timerCount;*/
-        feedback.textContent = "Try again!";
+        
     } else {
-        feedback.textContent = "That's the correct answer!";
+        feedback.textContent = "Correct!";
         currentQuestionIndex++;
     };
 
@@ -108,12 +99,14 @@ function questionAnswered(){
     }
 };
 
-function endGame() {
+function endGame() { //game ends. Clears timer and takes user to end screen with high scores
+    clearInterval(time);
+
     let endScreen = document.querySelector("#end-screen");
     endScreen.removeAttribute("class");
 
     let finalScore = document.querySelector("#final-score");
-    finalScore.textContent = timerCount;
+    finalScore.textContent = timeLeft;
 
     questionsDiv.setAttribute("class", "hide");
 
@@ -123,12 +116,11 @@ function saveHighScore(){
     let initials = playerInitials.value.trim();
 
     if(initials !== "") {
-        let highscores = JSON.parse(localStorage.getItem("highscores")) || [""];
+        let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
         let newScore = {
-            score: time,
+            score: timeLeft,
             initials: initials
         };
-    
 
         highscores.push(newScore);
         localStorage.setItem("highscores", JSON.stringify(highscores));
