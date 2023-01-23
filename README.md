@@ -1,6 +1,7 @@
 # code-quiz
 Module 6 challenge create a timed, multiple-choice coding quiz that can keep track of high scores and quiz-takers' initials
 
+## Deployed at: https://fdunnington.github.io/code-quiz/
 
 # Module 6 Challenge Web APIs: Code Quiz
 
