@@ -1,5 +1,5 @@
-// Stage 1: referencing all interactive HTML elements
-//main structure from index.html
+//>>>>>>>>>>>>>>>>>>>>>>>> Stage 1: referencing HTML elements >>>>>>>>>>>>>>>>>>>>>>>>>
+//vars for index.html
 var timer = document.querySelector("#time");
 var startButton = document.querySelector("#start");
 var hide = document.querySelector(".hide");
@@ -7,22 +7,25 @@ var playerInitials = document.querySelector("#initials");
 var feedback = document.querySelector("#feedback");
 var submitButton = document.querySelector("#submit");
 
-//questions div
+//vars for highscores.html
+var clearButton = document.querySelector("#clear");
+var highscores = document.querySelector("highscores");
+
+//vars for questions div
 var questionsDiv = document.querySelector("#questions");
 var choicesDiv = document.querySelector("#choices");
 var currentQuestionIndex = 0;
 
-//highscores.html
-var clearButton = document.querySelector("#clear");
-var highscores = document.querySelector("highscores");
-
-//misc vars
-var time = 0;
+//timer vars
+var time;
 var timeLeft = allQuestions.length * 15;
 
 
+//>>>>>>>>>>>>>>>>>>>>>>>> Stage 2: functions >>>>>>>>>>>>>>>>>>>>>>>>>
 
-//Stage 2: functions
+//-------------------------------------------------------
+// START GAME
+//-------------------------------------------------------
 function startGame() { //when click on start button countdown begins and question appears, replacing start screen
 
     let startScreen = document.getElementById("start-screen");
@@ -30,22 +33,29 @@ function startGame() { //when click on start button countdown begins and questio
     startScreen.setAttribute("class", "hide"); //adds class 'hide' to #start-screen element so start screen hidden
     questionsDiv.removeAttribute("class"); //removes class (which is 'hide') so questions visible
     
-    startTimer(); //calls timer function
+    time = setInterval(startTimer, 1000); //calls timer function
     getQuestion(); //calls question function
 };
 
-function startTimer() { //sets the timer
-    time = setInterval(function() {
-        timeLeft--; //countdown by one at interval set
-        timer.textContent = timeLeft; //#time HTML element shows timeLeft value
-        
-        if (timeLeft <= 0){ //if time <= 0 then game ends - out of time
-            endGame();
-            alert("You ran out of time!");
-        };
-    }, 1000);
+//-------------------------------------------------------
+// TIMER
+//-------------------------------------------------------
+function startTimer() { //quiz timer function
+    timeLeft--; //countdown by one at interval set
+
+    if (timeLeft <= 0){
+        timeLeft = 0;
+        clearInterval(time); //stops timer
+        alert("Sorry - you ran out of time!");
+        endGame();
+    };
+
+    timer.textContent = timeLeft; //#time HTML element shows timeLeft value
 };
 
+//-------------------------------------------------------
+// QUESTIONS & ANSWERS
+//-------------------------------------------------------
 function getQuestion(){ // pulls a question & goes through questions array until all questions asked || time runs out
     let currentQuestion = allQuestions[currentQuestionIndex];
     let questionTitle = document.querySelector("#question-title");
@@ -68,73 +78,66 @@ function getQuestion(){ // pulls a question & goes through questions array until
 };
 
 function questionAnswered(){ // checks whether answer correct. If yes, new question, if no then time penalty and 'try again' message
+    feedback.setAttribute("class", "feedback"); //feedback for whether question answered correctly or not
+    
     if (this.value !== allQuestions[currentQuestionIndex].answer){
+        timeLeft -= 10; //time penalty for incorrect answer
         feedback.textContent = "Try again!";
-
-        if (timeLeft <= 0) {
-            timer.textContent = "0";
-            endGame();
-        } else {
-            timeLeft -= 15;
-            timer.textContent = timeLeft;
-        }
-
-        
+        if (timeLeft <= 0){
+            timeLeft = 0;
+        };
     } else {
         feedback.textContent = "Correct!";
         currentQuestionIndex++;
     };
 
-    feedback.setAttribute("class", "feedback");
-
-    setTimeout(function(){
+    setTimeout(function(){ //feedback disappears after 1000ms
         feedback.setAttribute("class", "feedback hide");
     }, 1000);
 
-
-    if (currentQuestionIndex === allQuestions.length) {
+    if (currentQuestionIndex === allQuestions.length) { //game ends and timer tops when all questions in array gone through. Otherwise next quesstion in array displayed.
+        clearInterval(time); 
         endGame();
     } else {
         getQuestion();
     }
+
+    timer.textContent = timeLeft; // displays timerLeft in html element based on above parameters
 };
 
+//-------------------------------------------------------
+// ENDS GAME
+//-------------------------------------------------------
 function endGame() { //game ends. Clears timer and takes user to end screen with high scores
-    clearInterval(time);
-
-    let endScreen = document.querySelector("#end-screen");
-    endScreen.removeAttribute("class");
+    
+    let endScreen = document.querySelector("#end-screen"); 
+    endScreen.removeAttribute("class", "hide"); //removes 'class: hide' so end screen visible)
 
     let finalScore = document.querySelector("#final-score");
-    finalScore.textContent = timeLeft;
+    finalScore.textContent = timeLeft; //equates final score to time remaining
 
-    questionsDiv.setAttribute("class", "hide");
-
+    questionsDiv.setAttribute("class", "hide"); //enables 'class: hide' to be applied to questions div so not visible
 };
 
 function saveHighScore(){
-    let initials = playerInitials.value.trim();
+    let initials = playerInitials.value.trim(); //sets input value excluding spaces as initials in newScore object
 
     if(initials !== "") {
-        let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-        let newScore = {
+        let highscores = JSON.parse(localStorage.getItem("highscores")) || []; // creates var from local storage key highscores
+        let newScore = { //creates object for score and initials
             score: timeLeft,
             initials: initials
         };
 
-        highscores.push(newScore);
+        highscores.push(newScore); //pushes new score to highscores array
         localStorage.setItem("highscores", JSON.stringify(highscores));
 
-        window.location.href = "highscores.html";
+        window.location.href = "highscores.html"; //saves to highscores.html
+    } else {
+        alert("Please enter your initials so we can store your score."); // alert prompting user to fill in initails in order to save score
     };
 };
 
-function checkForEnter(event) {
-    if(event.key === "Enter") {
-        saveHighScore();
-    }
-}
-
-
-startButton.addEventListener("click", startGame);
-submitButton.addEventListener("click", saveHighScore);
+// >>>>>>>>>>>>>>>>>>>>>>>>> Stage 3: Event listeners for start and submit buttons >>>>>>>>>>>>>>>>>>>>>
+startButton.addEventListener("click", startGame); // event listener so startGame function runs on clicking the start button
+submitButton.addEventListener("click", saveHighScore); // event listener so saveHighScore function runs on clicking submit button
