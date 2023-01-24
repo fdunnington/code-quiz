@@ -5,23 +5,19 @@ function displayHighScores(){
         return b.score - a.score;
     });
 
-    highscores.forEach(function(score){
+    highscores.forEach(function(score){ //displays each new high score as new li item
         let li = document.createElement("li");
         li.textContent = `${score.initials}: ${score.score}`;
         
         let ol = document.getElementById("highscores");
         ol.appendChild(li);
     });
-
-    console.log(highscores);
 }
 
-
-function clearHighScores() {
+function clearHighScores() { //clears high scores from local storage and page
     localStorage.removeItem("highscores");
     window.location.reload();
 }
-
 
 let clearButton = document.getElementById("clear");
 clearButton.addEventListener("click", clearHighScores);

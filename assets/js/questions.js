@@ -1,3 +1,6 @@
+//-------------------------------------------------------
+// QUIZ QUESTIONS
+//-------------------------------------------------------
 let allQuestions = [
     {   title: 'Inside which HTML element do we put JavaScript?',
         choice: [
