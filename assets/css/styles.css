@@ -1,16 +1,21 @@
+:root {
+  --primary: #3EC5AC;
+  --hover: #1DECC7;
+}
+
 body {
   font-family: Arial;
   font-size: 120%;
 }
 
 a {
-  color: #563d7c;
+  color: var(--primary);
   text-decoration: none;
   transition: color 0.1s;
 }
 
 a:hover {
-  color: #8570a5;
+  color: var(--hover);
 }
 
 button {
@@ -18,16 +23,16 @@ button {
   margin: 5px;
   cursor: pointer;
   font-size: 100%;
-  background-color: #563d7c;
+  background-color: var(--primary);
   border-radius: 5px;
-  padding: 2px 10px;
+  padding: 12px 12px;
   color: white;
   border: 0;
   transition: background-color 0.1s;
 }
 
 button:hover {
-  background-color: #8570a5;
+  background-color: var(--hover);
 }
 
 .choices button {
@@ -85,4 +90,8 @@ li:nth-child(odd) {
   position: absolute;
   top: 10px;
   right: 10px;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
 }
